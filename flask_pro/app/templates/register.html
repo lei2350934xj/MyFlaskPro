@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>登录页面</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='register.css') }}">
+</head>
+<body style='background-color: #009ACD;'>
+	<h2 class='title-welcome'>Lsheng 凉生应用管理平台</h2>
+	<div class='register-interface'>
+		<form method='POST' action='/login'>
+		    {{ registerform.csrf_token() }}
+		    <div class='input-common'><span class='input-name'>{{registerform.username.label}}</span>{{registerform.username}}</div>
+		    <div class='input-common'><span class='input-name'>{{registerform.password.label}}</span>{{registerform.password}}</div>
+		    <div class='input-common'><span class='input-name'>{{registerform.password2.label}}</span>{{registerform.password2}}</div>
+		    {{registerform.register}}
+		</form>
+	</div> 
+</body>
+</html>

@@ -1,0 +1,36 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - microblog</title>
+    {% else %}
+    <title>Lsheng凉生</title>
+    {% endif %}
+    <link href="{{ url_for('static',filename='base.css') }}" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class='nav'>
+      ----通用nav部分----
+    </div>
+    <hr>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for msg in messages %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <hr>
+    <div class='footer'>
+      ----通用footer部分----
+    </div>
+  </body>
+    {% block js %}{% endblock %}
+    
+</html>

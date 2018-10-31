@@ -1,0 +1,96 @@
+/* 通用样式part */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.content {
+	width: 1020px;
+	margin: 0 auto;
+	/*background-color: pink;*/
+}
+
+.cls {
+	height: 1px;
+	clear: both;
+}
+
+/**/
+.nav-bar {
+	height: 150px;
+	background-color: skyblue;
+}
+.content {
+	width: 1020px;
+	margin: 0 auto;
+	/*background-color: gray;*/
+	overflow: hidden;
+}
+.left-part {
+	float: left;
+	border: 1px solid black;
+	border-radius: 10px;	
+}
+.left-part-common {
+	width: 260px;
+	height: 350px;
+	display: none;
+}
+.left-part1 {
+	background-color: blue;
+}
+.left-part2 {
+	background-color: green;
+}
+.left-part3 {
+	background-color: yellow;
+}
+.left-part4 {
+	background-color: red;
+}
+.left-part5 {
+	background-color: pink;
+}
+.left-part6 {
+	background-color: gray;
+}
+.left-part7 {
+	background-color: skyblue;	
+}
+.left-part8 {
+	background-color: orange;	
+}
+.right-part {
+	float: left;
+	width: 725px;
+	height: 300px;
+	margin-left: 25px;
+	border: 1px solid black;
+}
+#codeArea {
+	overflow: scroll;
+}
+
+/**/
+.menu {
+	overflow: hidden;
+	margin-bottom: 5px;
+	/*background-color: pink;*/
+}
+.menu-button-common {
+	/*float: left;*/
+	width: 100px;
+	height: 50px;
+	margin-left: 20px;
+	cursor: pointer;
+}
+.menu-btn-current {
+	background-color: #e92302;
+}
+
+/**/
+.form-common {
+	margin: 5px;
+	font-size: 16px;
+	color: black;
+}

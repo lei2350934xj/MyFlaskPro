@@ -1,0 +1,63 @@
+/* 通用样式part */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.title-welcome {
+	margin-top: 30px;
+	font-size: 36px;
+	line-height: 36px;
+	text-align: center;
+	font-family: bold;
+	font-weight: 700;
+}
+
+.register-interface {
+	margin: 30px auto;
+	padding-top: 40px;
+	padding-left: 70px;
+	width: 320px;
+	height: 190px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+.input-common {
+	width: 300px;
+	height: 24px;
+	color: black;
+	/*background-color: pink;*/
+	margin-bottom: 20px;
+}
+
+.input-name {
+	display: inline-block;
+	width: 80px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 30px;
+	margin-right: 5px;
+}	
+
+#username {
+	line-height: 30px;
+	width: 200px;
+	height: 30px;
+}
+#password, #password2 {
+	width: 200px;
+	height: 30px;
+}
+
+#register {
+	display: block;
+	width: 160px;
+	height: 40px;
+	color: black;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	margin-left: 108px;
+	margin-bottom: 5px;
+}

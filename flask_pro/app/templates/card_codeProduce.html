@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<link href="{{ url_for('static',filename='card_codeProduce.css') }}" rel="stylesheet" type="text/css" />	
+	<div class="nav-bar"></div>
+	<div class="content">
+		<div class="menu">
+			<button class="menu-button-common menu-btn-current">独立接口压测</button>
+			<button class="menu-button-common">menu2</button>
+			<button class="menu-button-common">menu3</button>
+			<button class="menu-button-common">menu4</button>
+			<button class="menu-button-common">menu5</button>
+			<button class="menu-button-common">menu6</button>
+			<button class="menu-button-common">menu7</button>
+			<button class="menu-button-common">menu8</button>
+		</div>
+		<div id="leftPart" class="left-part">
+			<div class="left-part-common left-part1" style="display: block;">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置:</h2>
+				<form class="form-common">
+					域名:&nbsp;<input type='text' placeholder='例如：www.baidu.com' style='width: 200px; height: 30px;'/><br/>
+					接口:&nbsp;<input type='text' placeholder='例如：/activity/index' style='width: 200px; height: 30px;'/><br/>
+					请求方式:&nbsp;<input type='radio' checked='checked' name='API' value='GET'/>&nbsp;<label for='API_METHOD_GET'>GET</label>
+					<input type='radio' name='API' value='POST'/>&nbsp;<label for='API_METHOD_POST'>POST</label>
+					<input type='radio' name='API' value='PUT'/>&nbsp;<label for='API_METHOD_PUT'>PUT</label><br/>
+					User-Agent:
+					<select id='userAgent'>
+						<option>Android版本手机百度</option>
+						<option>IOS版本手机百度</option>
+					</select><br/>
+					cookies:<textarea rows='9' cols='39'>这里输入你的cookies...</textarea>
+					<input id='leftPartReset' style='width:55px; height:20px; font-size:24px; line-height: 24px; display: inline-block; margin: 5px 40px;' type='button' value='重置'/>	
+					<input id='leftPartCreate' style='width:65px; height:28px; font-size:24px; line-height: 24px; display: inline-block; margin: 5px 20px;' type='button' value='生成'/>
+									
+				</form>
+			</div>
+			<div class="left-part-common left-part2">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置2:</h2>
+			</div>	
+			<div class="left-part-common left-part3">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置3:</h2>
+			</div>		
+			<div class="left-part-common left-part4">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置4:</h2>
+			</div>	
+			<div class="left-part-common left-part5">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置5:</h2>
+			</div>	
+			<div class="left-part-common left-part6">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置6:</h2>
+			</div>	
+			<div class="left-part-common left-part7">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置7:</h2>
+			</div>	
+			<div class="left-part-common left-part8">
+				<h2 style='font-size: 18px;line-height: 20px;text-align: center; margin-top: 5px;'>参数设置8:</h2>
+			</div>																			
+		</div>
+		<div id='codeArea' class="right-part">
+
+		</div>
+	</div>
+	<script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='handlebars-v4.0.12.js') }}"></script>
+	<script src="{{ url_for('static', filename='card_codeProduce.js') }}"></script>
+{% endblock %}
+
+{% block js %}
+  <script id="tpl" type="text/x-handlebars-template">
+    <p>from locust import HttpLocust, TaskSet, task, events</p><br/>
+    <p>class UserBehavior(TaskSet):</p><br/>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;@task(1)</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;def index_Task(self):</p>
+    {% raw %}
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User_Agent = {{ UserAgent }}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cookies = {{ cookies }}</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;with self.client.{{method}}({{ api }},headers={'User-Agent':{{ UserAgent }},'Cookie': {{cookies}} }) as response:</p><br/>
+    <p>class Main(HttpLocust):</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;task_set = UserBehavior</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;min_wait = 50</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;max_wait = 50</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;host={{ host }}</p>
+    {% endraw %}
+  </script> 
+{% endblock %}

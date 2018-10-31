@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<link href="{{ url_for('static',filename='index.css') }}" rel="stylesheet" type="text/css" />
+	<div class="content">
+		<div class="content-header">
+			<span class="greeting">您好！</span>{{username}}
+			<div class="page-label">欢迎来到</div>
+			<div class="title">Lsheng 凉生</div>
+			<div class="nav-title">精选</div>
+		</div>
+		<div class="cls"></div>	
+		<div class="content-center">
+			<div id="codeProduce" class="content-center-common content-center-part1 content-center-first">
+				<div class="content-center-common-title">代码</div>
+				<div class="content-center-common-con">生成器</div>
+			</div>
+			<div class="content-center-common content-center-part2">
+				<div class="content-center-common-title">title2</div>
+				<div class="content-center-common-con">content2</div>
+			</div>
+			<div class="content-center-common content-center-part3">
+				<div class="content-center-common-title">title3</div>
+				<div class="content-center-common-con">content3</div>
+			</div>
+			<div class="content-center-common content-center-part4">
+				<div class="content-center-common-title">title4</div>
+				<div class="content-center-common-con">content4</div>
+			</div>									
+		</div>
+		<div class="cls"></div>
+	</div>
+	<script src="{{url_for('static',filename='index.js')}}"></script>	
+{% endblock %}

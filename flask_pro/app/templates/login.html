@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>登录页面</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='login.css') }}">
+</head>
+<body style='background-color: #009ACD;'>
+	<h2 class='title-welcome'>Lsheng 凉生应用管理平台</h2>
+	<div class='login-interface'>
+		<form method='POST' action='/index'>
+		    {{ loginform.csrf_token() }}
+		    <div class='input-common'><span class='input-name'>{{loginform.username.label}}</span>{{loginform.username}}</div>
+		    <div class='input-common'><span class='input-name'>{{loginform.password.label}}</span>{{loginform.password}}</div>
+		    {{loginform.login}}
+		</form>
+		<form method='GET' action='/register'>
+			{{ registerbtn.csrf_token() }}
+			{{ registerbtn.register }}
+		</form>
+	</div> 
+</body>
+</html>

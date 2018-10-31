@@ -2,7 +2,9 @@ from app import app
 from flask import render_template
 from .forms import LoginForm, RegisterBtn, RegisterForm
 from flask import request, make_response, flash, redirect, Response
-from .controller import addUser, validateIdCard
+from .controller import addUser, validateIdCard, auth, generate_token, generate_cookie
+# from .controller import *
+from .model import User
 
 
 @app.route('/',methods=['GET','POST'])
@@ -16,6 +18,17 @@ def index():    # 首页
         flash('get方式访问index')
         # GET方式：1.判断是否登录，没登录重定向到login页面 2.登录了直接渲染带有用户个人信息的index页面
         username = request.cookies.get('username')
+        print(username)
+        print(type(username))
+        '''
+            通过调试发现 cookie过期的结果就是设置的字段返回值为None
+        '''
+        if username != None:    # 没有过期
+            # 显示
+            print('cookie没有过期')
+        else:
+            print('cookie过期了')
+
         login_success_flag = request.cookies.get('login_success_flag')
         
         if bool(login_success_flag)!=True:  # 注意数据类型转换 一个坑
@@ -26,7 +39,11 @@ def index():    # 首页
 
     elif request.method == 'POST':  # 相当于从login页面跳转
         flash('post方式访问index')
-        # POST方式：1.验证提交的表单信息是否正确 2.验证通过渲染带有用户个人信息的index页面
+        ''' 
+        POST方式：
+        1.验证提交的表单信息是否正确 2.验证通过渲染带有用户个人信息的index页面
+        3.验证通过 调用token生成函数生成带有id和过期时间的token 存入cookie里
+        '''
         loginform = LoginForm()  # 获取表单信息
 
         if loginform.validate_on_submit():   # 用户点击登录按钮
@@ -37,9 +54,14 @@ def index():    # 首页
                 # 设置cookie
                 res = make_response(render_template('index.html', username=username))
                 # res = Response('start set cookies')
-                res.set_cookie('username',username)
-                res.set_cookie('login_success_flag', 'True')
-                res.set_cookie('max_age','600') 
+                
+                u_id = User.query.filter_by(username=username).first().id
+                u_token = generate_token(u_id)
+                res.set_cookie('token', u_token, max_age=30)   # 5分钟
+
+                res.set_cookie('username', username, max_age=30)                
+                res.set_cookie('login_success_flag', 'True', max_age=30)
+
                 return res  # 设置cookie这里返回res这个很重要 也是个坑
             else:
                 # flash('账户名和密码错误')
@@ -88,6 +110,7 @@ def get_cookie():   # cookie设置的测试
 
 
 @app.route('/card/codeProduce',methods=['GET'])
+# @auth.login_required
 def codeProduce():  # card 代码生成器
     return render_template('card_codeProduce.html')
 

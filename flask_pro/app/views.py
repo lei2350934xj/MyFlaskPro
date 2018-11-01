@@ -1,8 +1,8 @@
 from app import app
 from flask import render_template
 from .forms import LoginForm, RegisterBtn, RegisterForm
-from flask import request, make_response, flash, redirect, Response
-from .controller import addUser, validateIdCard, auth, generate_token, generate_cookie
+from flask import request, make_response, flash, redirect, Response, jsonify
+from .controller import addUser, validateIdCard, auth, generate_token, generate_cookie, verify_token, g
 # from .controller import *
 from .model import User
 
@@ -57,8 +57,9 @@ def index():    # 首页
                 
                 u_id = User.query.filter_by(username=username).first().id
                 u_token = generate_token(u_id)
+                print('post登录时生成了u_token,u_token=%s'%u_token)
+                
                 res.set_cookie('token', u_token, max_age=30)   # 5分钟
-
                 res.set_cookie('username', username, max_age=30)                
                 res.set_cookie('login_success_flag', 'True', max_age=30)
 
@@ -111,8 +112,19 @@ def get_cookie():   # cookie设置的测试
 
 @app.route('/card/codeProduce',methods=['GET'])
 # @auth.login_required
+# @My_login_required
 def codeProduce():  # card 代码生成器
-    return render_template('card_codeProduce.html')
+    res = verify_token(request.cookies.get('token'))
+    print('res=%s'%res)
+    if res:    
+        print('headers====')
+        print(request.headers)
+        print('headers====')
+        # return 'g.user=%s'%g.user
+        return render_template('card_codeProduce.html')
+    else:
+        # 没有登录的用户直接跳转404
+        return make_response(jsonify({'errno':401,'errmsg':'未登录'}))
 
 
 if __name__ == '__main__':

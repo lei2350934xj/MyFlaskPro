@@ -3,10 +3,11 @@ from flask_httpauth import HTTPTokenAuth
 # from flask_httpauth import HTTPBasicAuth
 
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import g, make_response
+from flask import g, make_response, jsonify, request
 
 
 auth = HTTPTokenAuth()
+# auth = HTTPBasicAuth()
 
 
 # 一些常用的 业务逻辑
@@ -92,22 +93,51 @@ def generate_token(id, expiration=600):
     s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
     return s.dumps({'id':id})
 
+
 # 3.2 token校验
+'''
+	这个校验token的函数不好用 因为我现在不知道该函数中的token什么时候传递 在哪里传递
+	所以我打算自己重新写一个token的校验函数 以及一个login_required装饰器
+	见3.3 和 3.4
+'''
+# 3.3 cookie里的token校验
 @auth.verify_token
 def verify_token(token):
+	g.user = None
+	print(token)
+	print('=====')
+	print(type(token))
+	print('=====')
+	s = Serializer(app.config['SECRET_KEY'])
+	try:
+		data = s.loads(token)   # 包含id和过期时间
+		print('进入try语句了')
+		print('data=%s'%data)
+		print(type(data))
+	except:
+		print('进入except语句了')
+		return False
 
-    s = Serializer(app.config['SECRET_KEY'])
-    try:
-        data = s.loads(token)   # 包含id和过期时间
-    except SignatureExpired:
-        return False
-    except BadSignature:
-        return False
-    
-    g.user = User.query.get(data['id']) # 把这次请求中的数据挂载到g对象上 每次新请求都会刷新g对象
-    
-    return True   # 因为要用login_required装饰器 必须返回True或False
+	if 'id' in data:
+		g.user = User.query.get(data['id'])
+		return True
+	else:
+		return False
 
+
+# 3.4 My_login_required装饰器
+def My_login_required(self, fn):
+
+	def wrap():
+		print('verify_token(request)=%s'%verify_token(request))
+		if verify_token(request):
+			print('开始执行wrap里的fn函数了')
+			fn()
+		else:
+			print('开始执行return 错误处理函数了')
+			return self.auth_error_callback()
+	return wrap
+	
 
 @auth.error_handler
 def unauthorized():
@@ -124,7 +154,7 @@ def unauthorized():
 	多的参数只有不带key则全存在元组中
 	带参数的则以key:value形式存在字典中
 '''
-def generate_cookie(**kwargs, expiration=600):
+def generate_cookie(expiration=600, **kwargs):
 	# 遍历字典 key value
 	resp = make_response('set cookie')
 	
